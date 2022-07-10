@@ -1,36 +1,58 @@
-import React from "react";
-import styled, { css } from 'styled-components';
+import React, {useEffect, useState} from "react";
+import styled, {css} from 'styled-components';
 
-import * as colors from "../../colors";
-import ExpandableFilter from "../accordionfilter";
 import SearchBar from "../../components/searchbar";
 
 import SearchIcon from "../../images/search-icon-yellow.png";
 import YearIcon from "../../images/year-icon.png";
+import AccordionFilter from "../accordionfilter";
 
-export default function SearchFilters({ genres, ratings, languages, onSearch }) {
-  return (
-    <FiltersWrapper>
-      <SearchFiltersCont className="search_inputs_cont" marginBottom>
-        <SearchBar
-          id="keyword_search_input" 
-          type="text"
-          icon={{ src: SearchIcon, alt: 'Magnifying glass' }} 
-          placeholder="Search for movies"
-        />
-        <SearchBar
-          id="year_search_input" 
-          type="number"
-          icon={{ src: YearIcon, alt: 'Calendar icon' }} 
-          placeholder="Year of release"
-        />
-      </SearchFiltersCont>
-      <SearchFiltersCont>
-        <CategoryTitle>Movies</CategoryTitle>
-        {/* TODO: Complete the "AccordionFilter" component and re-use it for all filter categories */}
-      </SearchFiltersCont>
-    </FiltersWrapper>
-  );
+export default function SearchFilters({genres, ratings, languages, onSearch}) {
+    const [query, setQuery] = useState(null);
+    const [year, setYear] = useState(null);
+    const [lang, setLang] = useState('GR');
+
+    useEffect(() => {
+        // console.log(genres);
+        // console.log(ratings);
+        console.log(languages);
+    }, [genres])
+
+    useEffect(() => {
+        if (
+            query !== null
+        ) {
+            onSearch(query, year, lang)
+        }
+
+    }, [query, onSearch, year, lang])
+
+    return (
+        <FiltersWrapper>
+            <SearchFiltersCont className="search_inputs_cont" marginBottom>
+                <SearchBar
+                    id="keyword_search_input"
+                    type="text"
+                    icon={{src: SearchIcon, alt: 'Magnifying glass'}}
+                    placeholder="Search for movies"
+                    onChange={setQuery}
+                />
+                <SearchBar
+                    id="year_search_input"
+                    type="number"
+                    icon={{src: YearIcon, alt: 'Calendar icon'}}
+                    placeholder="Year of release"
+                    onChange={setYear}
+                />
+            </SearchFiltersCont>
+            <SearchFiltersCont>
+                <CategoryTitle>Movies</CategoryTitle>
+                <AccordionFilter type="Genre(s)" values={genres}/>
+                <AccordionFilter type="min. vote"/>
+                <AccordionFilter type="Language"/>
+            </SearchFiltersCont>
+        </FiltersWrapper>
+    );
 }
 
 const FiltersWrapper = styled.div`

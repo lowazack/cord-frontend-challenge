@@ -1,9 +1,7 @@
-import React, {useEffect} from "react";
+import React from "react";
 import {styled, theme} from '../../stitches.config';
 
 export default function MovieItem({movie, genres}) {
-
-
     return (
         // TODO: Complete the  MovieItem component
         <MovieItemWrapper>
@@ -11,7 +9,13 @@ export default function MovieItem({movie, genres}) {
             <Info>
                 <Title>{movie.title}</Title>
                 <Genres>
-                    Action | Comedy
+                    {movie.genre_ids.map(genreId =>
+                        <Genre key={`genre-${genreId}`}>
+                            {genres.filter(genreObj => {
+                                return genreObj.id === genreId
+                            })[0].name}
+                        </Genre>
+                    )}
                 </Genres>
 
                 <Overview>
@@ -60,6 +64,17 @@ const Genres = styled('h5', {
     margin: 0,
     color: theme.colors.primaryColor,
     mb: theme.space.sm
+})
+
+const Genre = styled('span', {
+    '&:after': {
+        content: " | "
+    },
+    '&:last-of-type': {
+        '&:after': {
+            content: ""
+        }
+    }
 })
 
 const Overview = styled('p', {

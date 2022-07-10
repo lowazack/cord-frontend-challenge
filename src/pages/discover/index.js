@@ -1,17 +1,15 @@
 import React from "react";
 import {styled, theme} from '../../stitches.config';
 
-import * as fetcher from "../../fetcher";
 
 import SearchFilters from "../../components/searchfilter";
 import MovieList from "../../components/movielist";
-import {getPopularMovies} from "../../fetcher";
+import {getGenres, getPopularMovies, searchMovies} from "../../fetcher";
 import MenuButton from "../../components/MenuButton";
 
 export default class Discover extends React.Component {
     constructor(props) {
         super(props);
-        console.log(props)
         this.state = {
             keyword: '',
             year: 0,
@@ -36,27 +34,33 @@ export default class Discover extends React.Component {
         };
     }
 
-    // TODO: Preload and set the popular movies and movie genres when page loads
     async componentDidMount() {
-        let [moviesRes, ] = await Promise.all([
-            getPopularMovies()
+        let [moviesRes, genreRes] = await Promise.all([
+            getPopularMovies(),
+            getGenres()
         ])
+
+
         this.setState({
             totalCount: moviesRes.total_results,
             page: moviesRes.page,
-            results: moviesRes.results
+            results: moviesRes.results,
+            genreOptions: genreRes.genres,
         })
     }
 
-    // TODO: Update search results based on the keyword and year inputs
+    searchMoviesCallback = async (query, year, lang) =>{
+        let movies = await searchMovies(query, year, lang);
 
-
+        this.setState({
+            results: movies.results,
+            totalCount: movies.total_results,
+        })
+    }
 
     render() {
         const {genreOptions, languageOptions, ratingOptions, totalCount, results} = this.state;
-
         const toggleMenu = () => {
-            console.log(this.props.menuOpen)
             if (this.props.menuOpen){
                 document.dispatchEvent(new Event('close-menu'));
             } else {
@@ -65,9 +69,10 @@ export default class Discover extends React.Component {
 
         }
 
+
+
         return (
             <Container>
-
                 <MobilePageTitle>
                     <MenuButton onClick={toggleMenu}/>
                     Discover
@@ -79,6 +84,7 @@ export default class Discover extends React.Component {
                             ratings={ratingOptions}
                             languages={languageOptions}
                             searchMovies={(keyword, year) => this.searchMovies(keyword, year)}
+                            onSearch={this.searchMoviesCallback}
                         />
                     </MovieFilters>
                     <Content>
