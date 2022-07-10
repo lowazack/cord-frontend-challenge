@@ -34,7 +34,7 @@ export default function SearchFilters({ genres, ratings, languages, onSearch }) 
 }
 
 const FiltersWrapper = styled.div`
-  position: relative;
+  position: relative; 
 `
 
 const SearchFiltersCont = styled.div`

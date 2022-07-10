@@ -29,13 +29,14 @@ export const {
         }
     },
     media: {
-        bp1: '(min-width: 480px)',
+        desktop: '(min-width: 1200px)',
     },
     utils: {
         pl: (value) => ({paddingLeft: value}),
         px: (value) => ({paddingLeft: value, paddingRight: value}),
         py: (value) => ({paddingTop: value, paddingBottom: value}),
         mb: (value) => ({marginBottom: value}),
+        mr: (value) => ({marginRight: value}),
         mt: (value) => ({marginTop: value}),
     },
 });

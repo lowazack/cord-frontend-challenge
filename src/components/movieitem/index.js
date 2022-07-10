@@ -3,11 +3,6 @@ import {styled, theme} from '../../stitches.config';
 
 export default function MovieItem({movie, genres}) {
 
-    useEffect(()=> {
-        console.log(movie);
-    }, [
-
-    ])
 
     return (
         // TODO: Complete the  MovieItem component
@@ -23,7 +18,7 @@ export default function MovieItem({movie, genres}) {
                     {movie.overview}
                 </Overview>
 
-                <Date datetime={movie.release_date}>
+                <Date dateTime={movie.release_date}>
                     {movie.release_date}
                 </Date>
             </Info>
@@ -58,6 +53,7 @@ const Info = styled('div', {
 const Title = styled('h2', {
     fontSize: '1.4rem',
     margin: 0,
+    paddingRight: 40,
 });
 
 const Genres = styled('h5', {
