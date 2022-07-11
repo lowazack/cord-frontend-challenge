@@ -5,6 +5,7 @@ import SearchFilters from "../../components/searchfilter";
 import MovieList from "../../components/movielist";
 import {getGenres, getPopularMovies, searchMovies} from "../../fetcher";
 import MenuButton from "../../components/MenuButton";
+import {debounce} from "lodash";
 
 export default class Discover extends React.Component {
     constructor(props) {
@@ -36,11 +37,11 @@ export default class Discover extends React.Component {
     }
 
     voteCallback = (id) => {
-        this.state.minVote === id? this.setState({minVote: null}): this.setState({minVote: id})
+        this.state.minVote === id ? this.setState({minVote: null}) : this.setState({minVote: id})
     }
 
     genreCallback = (id) => {
-        if (this.state.activeGenres.includes(id)){
+        if (this.state.activeGenres.includes(id)) {
             this.setState({
                 activeGenres: this.state.activeGenres.filter(genre => {
                     return genre !== id
@@ -48,7 +49,7 @@ export default class Discover extends React.Component {
             })
         } else {
             this.setState({
-                activeGenres:[...this.state.activeGenres, id]
+                activeGenres: [...this.state.activeGenres, id]
             })
 
         }
@@ -62,25 +63,31 @@ export default class Discover extends React.Component {
 
 
         this.setState({
-            totalCount: moviesRes.total_results,
-            page: moviesRes.page,
-            results: moviesRes.results,
-            genreOptions: genreRes.genres,
+            totalCount: moviesRes ? moviesRes.total_results : 0,
+            page: moviesRes ? moviesRes.page : 1,
+            results: moviesRes ? moviesRes.results : [],
+            genreOptions: genreRes ? genreRes.genres : [],
         })
     }
 
-    searchMoviesCallback = async (query, year, lang) => {
+    debouncedSearch = debounce(async (query, year, lang) => {
         let movies = await searchMovies(query, year, lang);
 
-        this.setState({
-            results: movies.results,
-            totalCount: movies.total_results,
-        })
+        if (movies) {
+            this.setState({
+                results: movies.results,
+                totalCount: movies.total_results,
+            })
+        }
+    }, 200)
+
+    searchMoviesCallback = async (query, year, lang) => {
+        this.debouncedSearch(query, year, lang)
     }
 
     filteredResults = () => {
         let results = this.state.results;
-        if (this.state.activeGenres.length){
+        if (this.state.activeGenres.length) {
             results = results.filter(result => {
                 return result.genre_ids.filter(genreId => {
                     return this.state.activeGenres.includes(genreId)
@@ -88,7 +95,7 @@ export default class Discover extends React.Component {
             })
         }
 
-        if(this.state.minVote){
+        if (this.state.minVote) {
             results = results.filter(result => {
                 return result.vote_average >= this.state.minVote;
             })
@@ -97,9 +104,10 @@ export default class Discover extends React.Component {
     }
 
     render() {
+
         const {genreOptions, languageOptions, ratingOptions, totalCount} = this.state;
         const toggleMenu = () => {
-            if (this.props.menuOpen){
+            if (this.props.menuOpen) {
                 document.dispatchEvent(new Event('close-menu'));
             } else {
                 document.dispatchEvent(new Event('open-menu'));
@@ -158,7 +166,7 @@ const DiscoverWrapper = styled('main', {
 
 const MovieResults = styled('div', {})
 
-const Content =  styled('div', {
+const Content = styled('div', {
     '@desktop': {
         gridColumnStart: '1',
         gridRowStart: '1',
