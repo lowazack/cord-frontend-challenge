@@ -79,7 +79,11 @@ const Genre = styled('span', {
 
 const Overview = styled('p', {
     margin: 0,
-    mb: theme.space.sm
+    mb: theme.space.sm,
+    display: '-webkit-box',
+    '-webkit-line-clamp': 5,
+    '-webkit-box-orient': 'vertical',
+    overflow: 'hidden'
 })
 
 const Date = styled('time', {

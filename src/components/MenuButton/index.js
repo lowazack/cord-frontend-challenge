@@ -1,9 +1,9 @@
-import {styled} from '../../stitches.config'
+import {styled, theme} from '../../stitches.config'
 
 const Container = styled('button', {
     width: 30,
     height: 25,
-    mr: 10,
+    mr: theme.space.md,
     position: 'relative',
     padding: 0,
     border: 0,
