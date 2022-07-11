@@ -11,7 +11,7 @@ export default function AccordionFilter(
         activeValues = [],
         callback
     }) {
-    const [open, setOpen] = useState(true)
+    const [open, setOpen] = useState(false)
 
     return (
         <Container>

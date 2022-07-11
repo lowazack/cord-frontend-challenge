@@ -46,8 +46,7 @@ const CheckboxInput = styled('input', {
         '+ span': {
             backgroundColor: theme.colors.primaryColor,
             '&:before': {
-                content: `"\\2713";
-}`
+                content: `"\\2713"`
             }
         }
     }
@@ -56,10 +55,12 @@ const CheckboxInput = styled('input', {
 const Box = styled('span', {
     position: 'absolute',
     inset: 0,
-    display: 'block',
+    display: 'flex',
     borderWidth: 2,
     borderStyle: 'solid',
     borderColor: '#000000',
     borderRadius: 3,
     pointerEvents: 'none',
+    alignItems: 'center',
+    justifyContent: 'center',
 })
