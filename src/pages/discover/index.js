@@ -111,7 +111,7 @@ export default class Discover extends React.Component {
         return (
             <Container>
                 <MobilePageTitle>
-                    <MenuButton onClick={toggleMenu}/>
+                    <MenuButton onClick={toggleMenu} open={this.props.menuOpen}/>
                     Discover
                 </MobilePageTitle> {/* MobilePageTitle should become visible on mobile devices via CSS media queries*/}
                 <DiscoverWrapper>
