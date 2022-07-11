@@ -3,9 +3,11 @@ import {styled, theme} from '../../stitches.config';
 
 export default function MovieItem({movie, genres}) {
     return (
-        // TODO: Complete the  MovieItem component
         <MovieItemWrapper>
-            <Poster src={`https://image.tmdb.org/t/p/w220_and_h330_face/${movie.poster_path}`}/>
+            <Poster
+                src={`https://image.tmdb.org/t/p/w220_and_h330_face/${movie.poster_path}`}
+                alt={`${movie.title} poster`}
+            />
             <Info>
                 <Title>{movie.title}</Title>
                 <Genres>
@@ -63,10 +65,11 @@ const Title = styled('h2', {
     paddingRight: 40,
 });
 
-const Genres = styled('h5', {
+const Genres = styled('h3', {
     margin: 0,
     color: theme.colors.primaryColor,
-    mb: theme.space.sm
+    mb: theme.space.sm,
+    fontSize:'1rem'
 })
 
 const Genre = styled('span', {

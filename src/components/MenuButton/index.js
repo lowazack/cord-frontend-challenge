@@ -60,7 +60,7 @@ const Line = styled('span', {
 
 export default function MenuButton({onClick, open}) {
     return (
-        <Container onClick={onClick} open={open}>
+        <Container onClick={onClick} open={open} aria-label={`toggle ${open? 'closed': 'open'}  menu`}>
             <Line/>
             <Line/>
             <Line/>

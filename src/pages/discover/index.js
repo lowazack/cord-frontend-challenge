@@ -8,6 +8,7 @@ import MenuButton from "../../components/MenuButton";
 import {debounce} from "lodash";
 
 export default class Discover extends React.Component {
+
     constructor(props) {
         super(props);
         this.state = {
@@ -36,6 +37,21 @@ export default class Discover extends React.Component {
         };
     }
 
+    async componentDidMount() {
+        let [moviesRes, genreRes] = await Promise.all([
+            getPopularMovies(),
+            getGenres()
+        ])
+
+
+        this.setState({
+            totalCount: moviesRes ? moviesRes.total_results : 0,
+            page: moviesRes ? moviesRes.page : 1,
+            results: moviesRes ? moviesRes.results : [],
+            genreOptions: genreRes ? genreRes.genres : [],
+        })
+    }
+
     voteCallback = (id) => {
         this.state.minVote === id ? this.setState({minVote: null}) : this.setState({minVote: id})
     }
@@ -55,19 +71,16 @@ export default class Discover extends React.Component {
         }
     }
 
-    async componentDidMount() {
-        let [moviesRes, genreRes] = await Promise.all([
-            getPopularMovies(),
-            getGenres()
-        ])
+    searchMoviesCallback = async (query, year, lang) => {
+        this.debouncedSearch(query, year, lang)
+    }
 
-
-        this.setState({
-            totalCount: moviesRes ? moviesRes.total_results : 0,
-            page: moviesRes ? moviesRes.page : 1,
-            results: moviesRes ? moviesRes.results : [],
-            genreOptions: genreRes ? genreRes.genres : [],
-        })
+    toggleMenu = () => {
+        if (this.props.menuOpen) {
+            document.dispatchEvent(new Event('close-menu'));
+        } else {
+            document.dispatchEvent(new Event('open-menu'));
+        }
     }
 
     debouncedSearch = debounce(async (query, year, lang) => {
@@ -80,10 +93,6 @@ export default class Discover extends React.Component {
             })
         }
     }, 200)
-
-    searchMoviesCallback = async (query, year, lang) => {
-        this.debouncedSearch(query, year, lang)
-    }
 
     filteredResults = () => {
         let results = this.state.results;
@@ -106,19 +115,11 @@ export default class Discover extends React.Component {
     render() {
 
         const {genreOptions, languageOptions, ratingOptions, totalCount} = this.state;
-        const toggleMenu = () => {
-            if (this.props.menuOpen) {
-                document.dispatchEvent(new Event('close-menu'));
-            } else {
-                document.dispatchEvent(new Event('open-menu'));
-            }
-
-        }
 
         return (
             <Container>
                 <MobilePageTitle>
-                    <MenuButton onClick={toggleMenu} open={this.props.menuOpen}/>
+                    <MenuButton onClick={this.toggleMenu} open={this.props.menuOpen}/>
                     Discover
                 </MobilePageTitle> {/* MobilePageTitle should become visible on mobile devices via CSS media queries*/}
                 <DiscoverWrapper>
@@ -161,7 +162,6 @@ const DiscoverWrapper = styled('main', {
         display: 'grid',
         gridTemplateColumns: '1fr 280px'
     }
-
 })
 
 const MovieResults = styled('div', {})
