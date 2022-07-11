@@ -30,8 +30,29 @@ export default class Discover extends React.Component {
                 {id: 'EN', name: 'English'},
                 {id: 'RU', name: 'Russian'},
                 {id: 'PO', name: 'Polish'}
-            ]
+            ],
+            minVote: null,
+            activeGenres: []
         };
+    }
+
+    voteCallback = (id) => {
+        this.state.minVote === id? this.setState({minVote: null}): this.setState({minVote: id})
+    }
+
+    genreCallback = (id) => {
+        if (this.state.activeGenres.includes(id)){
+            this.setState({
+                activeGenres: this.state.activeGenres.filter(genre => {
+                    return genre !== id
+                })
+            })
+        } else {
+            this.setState({
+                activeGenres:[...this.state.activeGenres, id]
+            })
+
+        }
     }
 
     async componentDidMount() {
@@ -49,13 +70,31 @@ export default class Discover extends React.Component {
         })
     }
 
-    searchMoviesCallback = async (query, year, lang) =>{
+    searchMoviesCallback = async (query, year, lang) => {
         let movies = await searchMovies(query, year, lang);
 
         this.setState({
             results: movies.results,
             totalCount: movies.total_results,
         })
+    }
+
+    filteredResults = () => {
+        let results = this.state.results;
+        if (this.state.activeGenres.length){
+            results = results.filter(result => {
+                return result.genre_ids.filter(genreId => {
+                    return this.state.activeGenres.includes(genreId)
+                }).length
+            })
+        }
+
+        if(this.state.minVote){
+            results = results.filter(result => {
+                return result.vote_average >= this.state.minVote;
+            })
+        }
+        return results;
     }
 
     render() {
@@ -68,8 +107,6 @@ export default class Discover extends React.Component {
             }
 
         }
-
-
 
         return (
             <Container>
@@ -85,14 +122,18 @@ export default class Discover extends React.Component {
                             languages={languageOptions}
                             searchMovies={(keyword, year) => this.searchMovies(keyword, year)}
                             onSearch={this.searchMoviesCallback}
+                            voteCallback={this.voteCallback}
+                            minVote={this.state.minVote}
+                            activeGenres={this.state.activeGenres}
+                            genreCallback={this.genreCallback}
+
                         />
                     </MovieFilters>
                     <Content>
-
                         <TotalCount>{totalCount} results</TotalCount>
                         <MovieResults>
                             <MovieList
-                                movies={results || []}
+                                movies={this.filteredResults() || []}
                                 genres={genreOptions || []}
                             />
                         </MovieResults>

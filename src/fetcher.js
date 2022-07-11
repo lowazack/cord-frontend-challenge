@@ -10,7 +10,6 @@ async function getPopularMovies(){
 async  function getGenres(){
     let res = await axios.get(`${baseUrl}/genre/movie/list?api_key=${apiKey}`)
     return res.data;
-
 }
 
 async function searchMovies(query,year, lang){
@@ -21,6 +20,7 @@ async function searchMovies(query,year, lang){
     let querySegment =  `&query=${encodeURIComponent(query)}`
     let yearSegment = `&year=${year}`
     let langSegment = `&language=${lang}`
+
     let res = await axios
         .get(`${baseUrl}/search/movie?api_key=${apiKey}${querySegment}${yearSegment}${langSegment}`)
 

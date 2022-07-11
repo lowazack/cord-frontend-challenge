@@ -4,9 +4,14 @@ import hash from 'object-hash'
 
 import Checkbox from "../checkbox";
 
-export default function AccordionFilter({type, values = []}) {
+export default function AccordionFilter(
+    {
+        type,
+        values = [],
+        activeValues = [],
+        callback
+    }) {
     const [open, setOpen] = useState(true)
-
 
     return (
         <Container>
@@ -21,8 +26,8 @@ export default function AccordionFilter({type, values = []}) {
                     name={value.name}
                     id={`checkbox-${hash({value, index})}`}
                     label={value.name}
-                    checked={true}
-                    onChange={val => console.log(val)}
+                    checked={activeValues.includes(value.id)}
+                    onChange={() => callback(value.id)}
                 />)}
             </div> : null}
         </Container>

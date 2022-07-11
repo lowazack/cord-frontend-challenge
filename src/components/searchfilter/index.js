@@ -7,16 +7,18 @@ import SearchIcon from "../../images/search-icon-yellow.png";
 import YearIcon from "../../images/year-icon.png";
 import AccordionFilter from "../accordionfilter";
 
-export default function SearchFilters({genres, ratings, languages, onSearch}) {
+export default function SearchFilters({genres, ratings, languages, onSearch, activeGenres, minVote, genreCallback, voteCallback}) {
     const [query, setQuery] = useState(null);
     const [year, setYear] = useState(null);
-    const [lang, setLang] = useState('GR');
+    const [lang, setLang] = useState(null);
 
-    useEffect(() => {
-        // console.log(genres);
-        // console.log(ratings);
-        console.log(languages);
-    }, [genres])
+
+
+    function langCallback(id){
+        lang === id? setLang(null): setLang(id)
+    }
+
+
 
     useEffect(() => {
         if (
@@ -47,9 +49,9 @@ export default function SearchFilters({genres, ratings, languages, onSearch}) {
             </SearchFiltersCont>
             <SearchFiltersCont>
                 <CategoryTitle>Movies</CategoryTitle>
-                <AccordionFilter type="Genre(s)" values={genres}/>
-                <AccordionFilter type="min. vote"/>
-                <AccordionFilter type="Language"/>
+                <AccordionFilter type="Genre(s)" values={genres} activeValues={activeGenres} callback={genreCallback}/>
+                <AccordionFilter type="min. vote" values={ratings} activeValues={[minVote]} callback={voteCallback}/>
+                <AccordionFilter type="Language" values={languages} activeValues={[lang]} callback={langCallback}/>
             </SearchFiltersCont>
         </FiltersWrapper>
     );
