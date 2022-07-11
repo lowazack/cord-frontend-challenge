@@ -1,8 +1,7 @@
-import React, {useState} from "react";
+import React from "react";
 import {styled, theme} from '../../stitches.config';
 import {NavLink as Link} from "react-router-dom";
 
-import * as colors from "../../colors";
 import Arrow from "../../images/arrow-icon.png";
 import SearchWhite from "../../images/search-icon-white.png";
 
@@ -12,16 +11,16 @@ export default function SideNavBar({open}) {
 
     return (
         <SideNavBarCont open={open}>
-            {/* TODO: Implement a hamburger icon that controls the open state of the sidebar. This control should only be visible on mobile devices via CSS media queries */}
-            {/* The sidebar should slide in from left */}
             <SideNavHeader>
                 Wesley
                 <img src={Arrow} alt="Arrow pointing down"/>
             </SideNavHeader>
-            <SideNavMainLink to="/discover" exact>
+
+            <SideNavMainLink as={Link} to="/discover" exact>
                 Discover
                 <img src={SearchWhite} alt="Magnifying glass"/>
             </SideNavMainLink>
+
             <SideNavSectionTitle><HeaderText>Watched</HeaderText></SideNavSectionTitle>
             <NavLink to="/watched/movies">Movies</NavLink>
             <NavLink to="/watched/tv-shows">Tv Shows</NavLink>

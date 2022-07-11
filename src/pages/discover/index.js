@@ -1,7 +1,6 @@
 import React from "react";
 import {styled, theme} from '../../stitches.config';
 
-
 import SearchFilters from "../../components/searchfilter";
 import MovieList from "../../components/movielist";
 import {getGenres, getPopularMovies, searchMovies} from "../../fetcher";
@@ -98,7 +97,7 @@ export default class Discover extends React.Component {
     }
 
     render() {
-        const {genreOptions, languageOptions, ratingOptions, totalCount, results} = this.state;
+        const {genreOptions, languageOptions, ratingOptions, totalCount} = this.state;
         const toggleMenu = () => {
             if (this.props.menuOpen){
                 document.dispatchEvent(new Event('close-menu'));

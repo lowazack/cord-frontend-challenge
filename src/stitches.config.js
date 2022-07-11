@@ -1,5 +1,4 @@
 import { createStitches } from '@stitches/react';
-import {fontColor, lightBackground, primaryColor, sideNavBar, sideNavBarHover} from "./colors";
 
 export const {
     styled,
