@@ -46,7 +46,10 @@ const MovieItemWrapper = styled('div', {
 
 
 const Poster = styled('img', {
-    width: 120,
+    width: 100,
+    '@desktop': {
+        width: 120,
+    }
 })
 
 const Info = styled('div', {
@@ -81,7 +84,7 @@ const Overview = styled('p', {
     margin: 0,
     mb: theme.space.sm,
     display: '-webkit-box',
-    '-webkit-line-clamp': 5,
+    '-webkit-line-clamp': 4,
     '-webkit-box-orient': 'vertical',
     overflow: 'hidden'
 })
