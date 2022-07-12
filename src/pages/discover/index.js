@@ -113,7 +113,6 @@ export default class Discover extends React.Component {
     }
 
     render() {
-
         const {genreOptions, languageOptions, ratingOptions, totalCount} = this.state;
 
         return (
@@ -138,7 +137,7 @@ export default class Discover extends React.Component {
                         />
                     </MovieFilters>
                     <Content>
-                        <TotalCount>{totalCount} results</TotalCount>
+                        <TotalCount id="total-count">{totalCount} results</TotalCount>
                         <MovieResults>
                             <MovieList
                                 movies={this.filteredResults() || []}

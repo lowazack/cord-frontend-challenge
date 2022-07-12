@@ -12,7 +12,7 @@ export const {
 } = createStitches({
     theme: {
         colors: {
-            primaryColor: '#2c789c',
+            primaryColor: '#c4ca18',
             lightBackground: '#f6f7f9',
             bodyLighten: '#ffffff',
             fontColor: '#31475f',
